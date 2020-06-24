@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# 进入etcdctl目录下执行
+cd /opt/etcd/bin/
+
+ETCDCTL_API=2  ./etcdctl --ca-file=/opt/etcd/ssl/ca.pem \
+  --cert-file=/opt/etcd/ssl/server.pem \
+  --key-file=/opt/etcd/ssl/server-key.pem \
+  --endpoints="{0}" \
+  set /coreos.com/network/config  \
+ '{{ "Network": "10.244.0.0/16", "Backend": {{"Type": "vxlan"}}}}'

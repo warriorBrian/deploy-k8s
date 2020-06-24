@@ -1,0 +1,76 @@
+#!/bin/sh
+#########################################
+# public methods
+print_green () {{
+ echo -e "\033[32m$1 \033[0m"
+}}
+print_red() {{
+ echo -e "\033[31m$1 \033[0m"
+}}
+print_yellow() {{
+ echo -e "\033[33m$1 \033[0m"
+}}
+#########################################
+
+cat > /opt/kubernetes/cfg/kubelet.conf << EOF
+KUBELET_OPTS="--logtostderr=false \\
+--v=2 \\
+--log-dir=/opt/kubernetes/logs \\
+--hostname-override={0} \\
+--network-plugin=cni \\
+--kubeconfig=/opt/kubernetes/cfg/kubelet.kubeconfig \\
+--bootstrap-kubeconfig=/opt/kubernetes/cfg/bootstrap.kubeconfig \\
+--config=/opt/kubernetes/cfg/kubelet-config.yml \\
+--cert-dir=/opt/kubernetes/ssl \\
+--pod-infra-container-image=lizhenliang/pause-amd64:3.0"
+EOF
+
+print_yellow "生成bootstrap.kubeconfig文件"
+
+KUBE_APISERVER="https://{1}:6443" # apiserver IP:PORT
+TOKEN=$(cat /opt/kubernetes/cfg/token.csv | cut -d "," -f 1) # 与token.csv里保持一致
+
+print_yellow "token自动获取为: ${{TOKEN}}"
+
+sleep 2
+
+# 生成 kubelet bootstrap kubeconfig 配置文件
+kubectl config set-cluster kubernetes \
+  --certificate-authority=/opt/kubernetes/ssl/ca.pem \
+  --embed-certs=true \
+  --server=${{KUBE_APISERVER}} \
+  --kubeconfig=bootstrap.kubeconfig
+kubectl config set-credentials "kubelet-bootstrap" \
+  --token=${{TOKEN}} \
+  --kubeconfig=bootstrap.kubeconfig
+kubectl config set-context default \
+  --cluster=kubernetes \
+  --user="kubelet-bootstrap" \
+  --kubeconfig=bootstrap.kubeconfig
+kubectl config use-context default --kubeconfig=bootstrap.kubeconfig
+
+
+mv bootstrap.kubeconfig /opt/kubernetes/cfg
+
+print_yellow "生成service文件"
+
+cat > /usr/lib/systemd/system/kubelet.service << EOF
+[Unit]
+Description=Kubernetes Kubelet
+After=docker.service
+[Service]
+EnvironmentFile=/opt/kubernetes/cfg/kubelet.conf
+ExecStart=/opt/kubernetes/bin/kubelet \$KUBELET_OPTS
+Restart=on-failure
+LimitNOFILE=65536
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl daemon-reload
+
+systemctl start kubelet
+
+systemctl enable kubelet
+
+systemctl status kubelet

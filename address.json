@@ -1,0 +1,6 @@
+{
+  "kubernetes_address": "",
+  "cni_address": "",
+  "flannel_address": "",
+  "etcd_address": ""
+}

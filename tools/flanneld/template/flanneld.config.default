@@ -1,0 +1,71 @@
+#!/bin/sh
+
+#########################################
+# public methods
+print_green () {{
+ echo -e "\033[32m$1 \033[0m"
+}}
+print_red() {{
+ echo -e "\033[31m$1 \033[0m"
+}}
+print_yellow() {{
+ echo -e "\033[33m$1 \033[0m"
+}}
+#########################################
+
+print_yellow "创建flanneld服务文件"
+
+cat > /usr/lib/systemd/system/flanneld.service << EOF
+[Unit]
+Description=Flanneld overlay address etcd agent
+After=network.target
+After=network-online.target
+Wants=network-online.target
+After=etcd.service
+Before=docker.service
+
+[Service]
+Type=notify
+ExecStart=/usr/local/bin/flanneld \
+  -etcd-cafile=/opt/etcd/ssl/ca.pem \
+  -etcd-certfile=/opt/etcd/ssl/server.pem \
+  -etcd-keyfile=/opt/etcd/ssl/server-key.pem \
+  -etcd-endpoints={0} \
+  -etcd-prefix=/coreos.com/network
+ExecStartPost=/usr/local/bin/mk-docker-opts.sh -k DOCKER_NETWORK_OPTIONS -d /run/flannel/docker
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+RequiredBy=docker.service
+EOF
+
+print_yellow "向CNI写入挂载网桥信息"
+
+cat >/etc/cni/net.d/10-mynet.conf <<EOF
+{{
+	"cniVersion": "0.2.0",
+	"name": "flannel",
+	"type": "flannel",
+	"delegate": {{
+    "bridge": "docker0",
+    "isDefaultGateway": true,
+    "mtu": 1400
+  }}
+}}
+EOF
+
+print_yellow "向系统注册flannel服务"
+
+
+systemctl daemon-reload
+
+systemctl enable flanneld
+
+systemctl start flanneld
+
+systemctl status flanneld
+
+print_yellow "查看网络信息"
+
+ip -4 a

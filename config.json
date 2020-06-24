@@ -1,0 +1,27 @@
+{
+  "master": [
+    {
+      "host": "192.168.1.29",
+      "password": "1",
+      "hostname": "k8s-master",
+      "user": "root",
+      "port": 22
+    }
+  ],
+  "node": [
+    {
+      "host": "192.168.1.33",
+      "password": "1",
+      "hostname": "k8s-node1",
+      "user": "root",
+      "port": 22
+    },
+    {
+      "host": "192.168.1.34",
+      "password": "1",
+      "hostname": "k8s-node2",
+      "user": "root",
+      "port": 22
+    }
+  ]
+}

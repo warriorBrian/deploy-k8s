@@ -1,0 +1,44 @@
+#!/bin/sh
+#########################################
+# public methods
+print_green () {{
+ echo -e "\033[32m$1 \033[0m"
+}}
+print_red() {{
+ echo -e "\033[31m$1 \033[0m"
+}}
+print_yellow() {{
+ echo -e "\033[33m$1 \033[0m"
+}}
+#########################################
+
+print_yellow "生成配置参数文件"
+
+cat > /opt/kubernetes/cfg/kube-proxy-config.yml << EOF
+kind: KubeProxyConfiguration
+apiVersion: kubeproxy.config.k8s.io/v1alpha1
+bindAddress: 0.0.0.0
+metricsBindAddress: 0.0.0.0:10249
+clientConnection:
+  kubeconfig: /opt/kubernetes/cfg/kube-proxy.kubeconfig
+hostnameOverride: {0}
+clusterCIDR: 10.0.0.0/24
+EOF
+
+KUBE_APISERVER="https://{1}:6443"
+
+kubectl config set-cluster kubernetes \
+  --certificate-authority=/opt/kubernetes/ssl/ca.pem \
+  --embed-certs=true \
+  --server=${{KUBE_APISERVER}} \
+  --kubeconfig=kube-proxy.kubeconfig
+kubectl config set-credentials kube-proxy \
+  --client-certificate=/root/TLS/k8s/kube-proxy.pem \
+  --client-key=/root/TLS/k8s/kube-proxy-key.pem \
+  --embed-certs=true \
+  --kubeconfig=kube-proxy.kubeconfig
+kubectl config set-context default \
+  --cluster=kubernetes \
+  --user=kube-proxy \
+  --kubeconfig=kube-proxy.kubeconfig
+kubectl config use-context default --kubeconfig=kube-proxy.kubeconfig

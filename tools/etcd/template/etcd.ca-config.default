@@ -1,0 +1,37 @@
+cat > ~/TLS/etcd/ca-config.json << EOF
+{
+  "signing": {
+    "default": {
+      "expiry": "87600h"
+    },
+    "profiles": {
+      "www": {
+         "expiry": "87600h",
+         "usages": [
+            "signing",
+            "key encipherment",
+            "server auth",
+            "client auth"
+        ]
+      }
+    }
+  }
+}
+EOF
+
+cat > ~/TLS/etcd/ca-csr.json << EOF
+{
+    "CN": "etcd CA",
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "CN",
+            "L": "Beijing",
+            "ST": "Beijing"
+        }
+    ]
+}
+EOF

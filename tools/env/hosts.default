@@ -1,0 +1,3 @@
+cat >> /etc/hosts <<EOF
+{0}
+EOF

@@ -1,0 +1,6 @@
+venv
+.idea
+backup
+/tools/tmp/
+hash
+/logs/
