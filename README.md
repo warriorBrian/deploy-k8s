@@ -8,6 +8,8 @@
 
 ![#EC5315](https://placehold.it/15/f03c15/000000?text=+) Stability: 1 - **Experimental**
 
+> kubernetes 1.18部署脚本，让部署变的更简单!
+
 ## 环境
 
 > python >= 3.7
