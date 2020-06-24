@@ -1,10 +1,14 @@
 ## deploy kubernetes
 
+![MIT](https://img.shields.io/badge/license-MIT-blue.svg)
 ![macOS](https://img.shields.io/badge/macOS-passing-green)
+![build](https://img.shields.io/badge/build-passing-green)
+![python](https://img.shields.io/badge/python-3.7-blue)
+![fabric](https://img.shields.io/badge/fabric-1.14-blue)
 
 ![#EC5315](https://placehold.it/15/f03c15/000000?text=+) Stability: 1 - **Experimental**
 
-### 环境
+## 环境
 
 > python >= 3.7
 
@@ -14,17 +18,21 @@
 
 > centos7/Debian
 
-### 构建与运行 :rocket:
+## 构建与运行 :rocket:
 
 ```bash
 pip3 install
 ```
 
-安装依赖项
+安装依赖项，运行:
 
-### 开始 :tada:
+```bash
+python3 deploy.py
+```
 
-#### 配置config.json:
+## 开始 :tada:
+
+### 配置config.json:
 
 > 配置项分为master, node两种角色
 
@@ -48,7 +56,7 @@ Example:
 :warning: 目前只支持单master进行部署，node角色中可为多个主机。
 master唯一，只能存在一个，node存在若干个，判定方式为master必须存在，假设只存在一个master为单节点部署，如果存在node就为集群模式
 
-#### 配置address.json:
+### 配置address.json:
 
 Example:
 
@@ -64,7 +72,7 @@ Example:
 }
 ```
 
-#### 开始部署:
+### 开始部署:
 
 确认`config.json`及`address.json`配置完毕，进行部署:
 
@@ -72,7 +80,7 @@ Example:
 python3 deploy.py
 ```
 
-### 目录结构
+## 目录结构
 
 ```
 ├── backup/                             备份文件目录
@@ -104,7 +112,7 @@ python3 deploy.py
 └── requirements.txt                    依赖文件  
 ```
 
-### 说明 :fire:
+## 说明 :fire:
 
 > 关于`etcd`部署
 
@@ -130,7 +138,7 @@ Example:
 
 这是至关重要的，在部署kubernetes集群中，hostname应该是唯一的。
 
-### 常见问题
+## 常见问题
 
 > Q: 该如何搭建nginx资源服务器为k8s提供下载服务?
 
