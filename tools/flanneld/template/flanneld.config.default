@@ -54,18 +54,3 @@ cat >/etc/cni/net.d/10-mynet.conf <<EOF
   }}
 }}
 EOF
-
-print_yellow "向系统注册flannel服务"
-
-
-systemctl daemon-reload
-
-systemctl enable flanneld
-
-systemctl start flanneld
-
-systemctl status flanneld
-
-print_yellow "查看网络信息"
-
-ip -4 a

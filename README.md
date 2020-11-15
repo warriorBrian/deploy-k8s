@@ -6,7 +6,7 @@
 ![python](https://img.shields.io/badge/python-3.7-blue)
 ![fabric](https://img.shields.io/badge/fabric-1.14-blue)
 
-![#EC5315](https://placehold.it/15/f03c15/000000?text=+) Stability: 1 - **Experimental**
+![#67C23A](https://placehold.it/15/67C23A/000000?text=+) Stability: 2 - **stable**
 
 > kubernetes 1.18部署脚本，让部署变的更简单!
 
@@ -55,7 +55,7 @@ Example:
 * user: SSH链接用户名
 * port: SSH端口
 
-:warning: 目前只支持单master进行部署，node角色中可为多个主机。
+:warning: 目前只支持单master进行部署(暂不支持多个master进行部署)，node角色中可为多个主机。
 master唯一，只能存在一个，node存在若干个，判定方式为master必须存在，假设只存在一个master为单节点部署，如果存在node就为集群模式
 
 ### 配置address.json:
@@ -89,6 +89,7 @@ python3 deploy.py
 ├── Controller/                         装饰器封装
 │   ├── __init__.py
 │   └── RemoteController.py             装饰器及库引用
+├── lib/                                模块化部署脚本
 ├── hash/                               部署步骤，回滚记录
 ├── logs/                               日志，记录执行步骤
 ├── tools/                              
@@ -101,6 +102,7 @@ python3 deploy.py
 │   ├── controller-manager/             部署kube-controller-manager目录
 │   │   └── ...
 │   ├── env/                            前置的环境准备脚本目录
+│   ├── docker/                         部署docker目录
 │   ├── etcd/                           部署etcd目录
 │   ├── flanneld/                       部署flannel目录
 │   ├── kube-proxy/                     部署kube-proxy目录
@@ -115,10 +117,6 @@ python3 deploy.py
 ```
 
 ## 说明 :fire:
-
-> 关于`etcd`部署
-
-etcd暂时不支持集群部署etcd，目前只在master节点上部署单台etcd，在**阶段: 2**中会增加集群部署etcd，按node节点数量部署。
 
 > 关于`hash/`目录
 

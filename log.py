@@ -2,9 +2,9 @@ import os
 import logging
 import datetime
 import logging.config
-BASE_DIR = f"{os.getcwd()}/logs"
+BASE_DIR = f"{os.getcwd()}/tmp/logs"
 if not os.path.exists(BASE_DIR):
-    os.mkdir(BASE_DIR)
+    os.makedirs(BASE_DIR)
 logFile = datetime.datetime.now().strftime("%Y-%m-%d") + ".log"
 LOGGING = {
     # 当前日志的版本号
