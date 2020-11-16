@@ -32,7 +32,7 @@ pip3 install
 python3 deploy.py
 ```
 
-## 开始 :tada:
+## 开始使用 :tada:
 
 ### 配置config.json:
 
@@ -86,12 +86,16 @@ python3 deploy.py
 
 ```
 ├── backup/                             备份文件目录
-├── Controller/                         装饰器封装
+├── Controller/                         装饰器封装目录
 │   ├── __init__.py
-│   └── RemoteController.py             装饰器及库引用
-├── lib/                                模块化部署脚本
-├── hash/                               部署步骤，回滚记录
-├── logs/                               日志，记录执行步骤
+│   └── FabricController.py             装饰器及库引用
+├── lib/                                模块化部署脚本目录
+│   ├── ...
+│   └── common.py                       公共引用文件
+├── tmp/                                脚本生成临时文件目录
+│   ├── hash/                           部署步骤，回滚记录(回滚对应步骤删除对应md5)
+│   ├── shell/                          脚本自动生成临时sh文件及其他配置文件
+│   └── logs/                           日志，记录执行步骤
 ├── tools/                              
 │   ├── apiServer/                      部署kube-apiserver目录
 │   │   ├── template/                   模板文件目录
@@ -107,8 +111,7 @@ python3 deploy.py
 │   ├── flanneld/                       部署flannel目录
 │   ├── kube-proxy/                     部署kube-proxy目录
 │   ├── kubelet/                        部署kubelet目录
-│   ├── scheduler/                      部署kube-scheduler目录
-│   └── tmp/                            临时存放根据模板生成脚本目录
+│   └──  scheduler/                     部署kube-scheduler目录
 ├── address.json                        配置所需安装包下载地址
 ├── config.json                         配置kubernetes基本部署信息
 ├── deploy.py                           主入口，部署任务脚本
@@ -118,9 +121,9 @@ python3 deploy.py
 
 ## 说明 :fire:
 
-> 关于`hash/`目录
+> 关于`tmp/hash`目录
 
-在`logs/`目录下，生成日志文件，按日期生成当进行部署时，会自动生成log记录:
+在`tmp/logs`目录下，生成日志文件，按日期生成当进行部署时，会自动生成log记录:
 
 Example:
 
@@ -128,7 +131,7 @@ Example:
 2020-06-23 22:12:46,504 [INFO]- md5: 2d33ac1ea4571b6aa0cfb14746a8bbc1, Re-execute, delete this md5, dir: /hash
 ```
 
-这个`md5`值会以目录形式在`hash/`目录中创建，这是可靠的。(如果创建设备文件，在mac book上存在权限禁止创建问题)
+这个`md5`值会以目录形式在`tmp/hash`目录中创建，这是可靠的。(如果创建设备文件，在mac book上存在权限禁止创建问题)
 
 当执行完某步骤，则下次以**同主机，同方法为判断依据，则不会执行，跳过该步骤。**
 
