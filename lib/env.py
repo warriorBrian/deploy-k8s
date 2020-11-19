@@ -60,7 +60,6 @@ class EnvConfigure:
         for keys in env.data:
             for item in env.data[keys]:
                 config_hosts += f"{item['host']} {item['hostname']}\n"
-                config_hosts += f"{item['host']} {item['hostname']}-{item['host']}\n"
 
         with open('tools/env/hosts.default', 'r') as file:
             for lines in file.readlines():

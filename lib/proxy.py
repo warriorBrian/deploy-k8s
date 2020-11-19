@@ -22,7 +22,7 @@ class DeployProxy:
         with open('tools/kube-proxy/template/kube-proxy-config.default', 'r') as f:
             template_data = ""
             for line in f.readlines():
-                template_data += line.format(f"{env.hostname[env.host]}-{env.host}", env.host)
+                template_data += line.format(f"{env.host}", env.host)
             file = open('tmp/shell/create_kube-proxy_config.sh', 'w')
             file.write(template_data)
             file.close()
