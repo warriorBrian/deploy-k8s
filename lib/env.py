@@ -53,7 +53,7 @@ class EnvConfigure:
         run('ntpdate time.windows.com')
 
     @roles('master', 'node')
-    # @ignore(u'配置环境所需条件')
+    @ignore(u'配置环境所需条件')
     def requirement(self):
         config_hosts = ''
         template_host = ''

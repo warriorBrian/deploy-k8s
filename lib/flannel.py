@@ -21,8 +21,6 @@ class DeployFlanneld:
         execute(self.create_rbac)
         # update docker service
         execute(self.update_docker)
-        # announce message
-        execute(self.announce_message)
 
     @parallel
     @roles('master', 'node')
@@ -117,6 +115,3 @@ class DeployFlanneld:
         run('systemctl start docker')
         run('systemctl status docker')
 
-    @roles('master', 'node')
-    def announce_message(self):
-        print(green(f"IP:{env.host}, host: {env.hostname[env.host]}, 部署完毕!"))

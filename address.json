@@ -1,6 +1,6 @@
 {
-  "kubernetes_address": "",
-  "cni_address": "",
-  "flannel_address": "",
-  "etcd_address": ""
+  "kubernetes_address": "http://10.0.80.8:8090/1.18/kubernetes-server-linux-amd64.tar.gz",
+  "cni_address": "http://10.0.80.8:8090/1.18/cni-plugins-linux-amd64-v0.8.6.tgz",
+  "flannel_address": "http://10.0.80.8:8090/1.18/flannel-v0.12.0-linux-amd64.tar.gz",
+  "etcd_address": "http://10.0.80.8:8090/1.18/etcd-v3.4.9-linux-amd64.tar.gz"
 }

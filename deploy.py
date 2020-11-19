@@ -6,6 +6,7 @@ from lib.scheduler import DeployScheduler
 from lib.kubelet import DeployKubelet
 from lib.proxy import DeployProxy
 from lib.flannel import DeployFlanneld
+from lib.coredns import DeployCoreDns
 
 
 class Deploy:
@@ -41,6 +42,10 @@ class Deploy:
         # deploy flanneld
         deploy_flanneld = DeployFlanneld()
         deploy_flanneld.install()
+
+        # deploy coredns
+        deploy_coredns = DeployCoreDns()
+        deploy_coredns.install()
 
 
 if __name__ == '__main__':
