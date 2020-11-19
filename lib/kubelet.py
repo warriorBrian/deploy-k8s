@@ -24,7 +24,7 @@ class DeployKubelet:
         template_data = ""
         with open('tools/kubelet/template/create_kubelet_config.default', 'r') as f:
             for line in f.readlines():
-                template_data += line.format(f"{env.hostname[env.host]}-{env.host}", self.master_host)
+                template_data += line.format(f"{env.host}", self.master_host)
             file = open(f'tmp/shell/create_kubelet_service_{env.hostname[env.host]}.sh', 'w')
             file.write(template_data)
             file.close()
