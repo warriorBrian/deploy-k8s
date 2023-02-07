@@ -1,6 +1,6 @@
 bcrypt==3.1.7
 cffi==1.14.0
-cryptography==2.9.2
+cryptography==39.0.1
 Fabric3==1.14.post1
 gitdb==4.0.5
 paramiko==2.7.1
